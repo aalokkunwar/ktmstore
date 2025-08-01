@@ -1,0 +1,81 @@
+<div class="relative bg-white/20 backdrop-blur-md  rounded-2xl top-0">
+  <div class="mx-auto px-4 sm:px-6">
+    <div class="flex justify-center items-center py-6 md:justify-start md:space-x-10">
+      <!-- STORE NAME / STORE LOGO -->
+      <div class="flex justify-start lg:flex-1 truncate">
+        <h1 class="text-xl font-bold truncate">{{shop.name | upcase }}</h1>
+      </div>
+
+      <!-- NAVIGATION MENU -->
+
+      <nav x-data="{ open: false }" class="hidden md:flex space-x-10">
+
+          {% for link in linklists['main-menu'].links     %}
+            {% if link.links != blank %}
+               <div class="relative">
+                <button x-on:mouseenter="open = true" x-on:mouseleave="open = false" type="button"    class="relative flex justify-center items-center  text-base text-gray-800 hover:text-black transition-colors duration-300
+                        after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0
+                        after:bg-gray-800 after:transition-all after:duration-300 hover:after:w-full {% if link.active==true %}relative text-base text-black after:w-full {% endif %}">
+                 {{ link.title }}
+                 {% render 'icon-dropdown-down' %}
+                </button>
+
+                {% comment %} DROPDOWN MENU {% endcomment %}
+                <div class="absolute overflow-hidden z-10 -ml-5 mt-5 transform px-2 w-screen max-w-md backdrop-blur-md   sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
+                   <div x-show="open" @click.outside="open = false"
+                        x-transition:enter="transition ease-out duration-800"
+                        x-transition:enter-start="opacity-0 -translate-y-10"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        x-transition:leave="transition ease-in duration-750"
+                        x-transition:leave-start="opacity-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 -translate-y-10"
+                    class="bg-white/20">
+                    <div class="shadow-lg overflow-hidden rounded-lg">
+                      <div class="relative grid gap-6 bg-white/40 px-5 py-6 sm:gap-8 sm:p-8">
+
+                        <!-- CREATE THE SUBLINK -->
+                      
+
+                       {% for childlink in link.links  %}
+                         <a href="{{ childlink.url }}" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-100">
+                           <div class="ml-4">
+                             <p class="text-gray-900 text-base font-medium">
+                               {{ childlink.title }}
+                             </p>
+                           </div>
+                         </a>
+                       {% endfor %}
+
+                      </div>
+                    </div>
+                  </div>
+
+                  </div>
+
+              </div>
+              {% else %}
+              <div class="relative">
+                <a href="{{ link.url }}"
+                  class="relative text-base text-gray-800 hover:text-black transition-colors duration-300
+                  after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0
+                  after:bg-gray-800 after:transition-all after:duration-300 hover:after:w-full {% if link.active==true %}relative text-base text-black after:w-full {% endif %}">
+                  {{ link.title }}
+                </a>
+              </div>
+            {% endif %}
+      {% endfor %}
+
+       
+      </nav>
+
+      <div class="hidden md:flex items-center justify-end md:flex-1 space-x-5">
+        <a href="{{ routes.cart_url }}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
+          {% render 'icon-shopping-bag' %}
+        </a>
+
+        <a href="{{ routes.account_login_url }}" class="text-base text-gray-500 hover:text-gray-900">Login</a>
+        <a href="{{ routes.account_register_url }}" class="text-base text-gray-500 hover:text-gray-900">Register</a>
+      </div>
+    </div>
+  </div>
+</div>
