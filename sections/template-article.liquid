@@ -58,23 +58,34 @@
 {% if blog.comments_enabled? %}
     <div id="comment" class="my-8">
         {% if article.comments_count > 0 %}
-
+               <div class="flex-1 max-w-4xl mx-auto py-5 justify-center items-center font-semibold text-gray-500 text-3xl">
+                    <h2 class="text-lg mb-4 font-medium">See what people say</h2>
+                    {% paginate article.comments by 5 %}
+                        {% for comment in article.comments%}
+                            <div class="flex-1 border rounded-2xl my-4 px-2 sm:px-6 sm:py-4 leading-relaxed">
+                                <span class="comment-author">{{ comment.author }}</span> <span class="text-xs text-gray-400">{{ comment.created_at|date:format: 'default'}}</span>
+                                <p class="text-sm">{{ comment.content }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endpaginate %}
+                </div>
             {% else %}
                 <div class="flex w-max-7xl py-5 justify-center items-center font-semibold text-gray-500 text-3xl">
                     There are no comments yet
                 </div>
+            {% endif %}       
                 <div id="comment_form" class="mb-8">
                     {% form 'new_comment', article %}
                       <div class="flex-1 mx-auto items-center max-w-4xl  px-4">
                         <div class="px-1 md:flex mb-3">
                             <div class="px-3 md:w-1/2">
-                            <label for="comment_auther"  class="text-gray-700 font-medium uppercase text-xs mb-2">Name</label>
-                            <input type="text" id="comment_auther" placeholder="Ram Nath" required class="w-full text-gray-700 border py-3 px-4 mb-3 rounded-2xl focus:outline-gray-900">
+                            <label for="comment_author"  class="text-gray-700 font-medium uppercase text-xs mb-2">Name</label>
+                            <input type="text" id="comment_author" name="comment[author]" placeholder="Ram Nath" required class="w-full text-gray-700 border py-3 px-4 mb-3 rounded-2xl focus:outline-gray-900">
                             </div>
 
                             <div class="px-3 md:w-1/2">
                             <label for="comment_email"  class="text-gray-700 font-medium uppercase text-xs mb-2">Name</label>
-                            <input type="text" id="comment_email" placeholder="ramnath@domain.com" required class="w-full text-gray-700 border py-3 px-4 mb-3 rounded-2xl focus:outline-gray-900">
+                            <input type="text" id="comment_email" name="comment[email]" placeholder="ramnath@domain.com" required class="w-full text-gray-700 border py-3 px-4 mb-3 rounded-2xl focus:outline-gray-900">
                             </div>
                         </div>
                         <div class="px-1 md:flex mb-3">
@@ -91,7 +102,7 @@
                       </div>
                     {% endform %}
                 </div>
-        {% endif %}
+     
     </div>
 {% endif %}
     
