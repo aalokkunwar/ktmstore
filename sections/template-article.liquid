@@ -24,7 +24,7 @@
                 </div>
             {% when 'article_content' %}
                  <div class="flex justify-center items-center">
-                        <div class="max-w-7xl px-8">
+                        <div class="max-w-4xl px-4 text-justify md:px-8">
                             <p>{{ article.content }}</p>
                         </div>
                     </div>
@@ -55,7 +55,45 @@
     {% endfor %}
 </article>
 
+{% if blog.comments_enabled? %}
+    <div id="comment" class="my-8">
+        {% if article.comments_count > 0 %}
 
+            {% else %}
+                <div class="flex w-max-7xl py-5 justify-center items-center font-semibold text-gray-500 text-3xl">
+                    There are no comments yet
+                </div>
+                <div id="comment_form" class="mb-8">
+                    {% form 'new_comment', article %}
+                      <div class="flex-1 mx-auto items-center max-w-4xl  px-4">
+                        <div class="px-1 md:flex mb-3">
+                            <div class="px-3 md:w-1/2">
+                            <label for="comment_auther"  class="text-gray-700 font-medium uppercase text-xs mb-2">Name</label>
+                            <input type="text" id="comment_auther" placeholder="Ram Nath" required class="w-full text-gray-700 border py-3 px-4 mb-3 rounded-2xl focus:outline-gray-900">
+                            </div>
+
+                            <div class="px-3 md:w-1/2">
+                            <label for="comment_email"  class="text-gray-700 font-medium uppercase text-xs mb-2">Name</label>
+                            <input type="text" id="comment_email" placeholder="ramnath@domain.com" required class="w-full text-gray-700 border py-3 px-4 mb-3 rounded-2xl focus:outline-gray-900">
+                            </div>
+                        </div>
+                        <div class="px-1 md:flex mb-3">
+                            <div class="md:w-full px-3">
+                                <label for="comment_content" class="text-gray-700 font-medium uppercase text-xs mb-2">Comment</label>
+                                <textarea name="comment[body]" id="comment_content" placeholder="Start writting from here..." class="w-full text-gray-700 py-3 border px-4  rounded-2xl focus:outline-gray-900"></textarea>
+                            </div>
+                        </div>
+                        <div class="px-1 md:flex mb-3">
+                            <div class="md:w-full px-3">
+                                <input type="submit" value="POST" class="w-full cursor-pointer px-4 py-2 border rounded-2xl text-base font-medium text-white bg-gray-900 hover:bg-gray-600">
+                            </div>
+                        </div>
+                      </div>
+                    {% endform %}
+                </div>
+        {% endif %}
+    </div>
+{% endif %}
     
 
    
