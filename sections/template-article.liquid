@@ -1,15 +1,15 @@
-<article class="py-8">
+<article class="py-8" itemscope itemtype="http://schema.org/BlogPosting">
  {% for block in section.blocks %}
         {% case block.type %}
             {% when 'article_title' %}
                 <div class="flex justify-center items-center">
                     <div class="max-w-7xl text-center">
                         <a href="{{ blog.url }}" class="text-base uppercase text-gray-500 hover:text-gray-900 font-bold">{{ blog.title }}</a>
-                        <h1 class="text-4xl md:text-6xl font-medium uppercase">{{ article.title }}</h1>
+                        <h1 class="text-4xl md:text-6xl font-medium uppercase" itemprop="headline">{{ article.title }}</h1>
                     </div>
                 </div>
             {% when 'article_image' %}
-                <div class="max-w-7xl bg-blue-100 rounded-lg mx-2 md:mx-auto overflow-hidden">
+                <div itemprop="image" class="max-w-7xl bg-blue-100 rounded-lg mx-2 md:mx-auto overflow-hidden">
                         {% if article.image != blank %}
                             <img class="w-full h-80 md:h-96 object-contain object-center p-5"  src="{{ article.image | image_url: width: 700}}" 
                                  alt="{{ article.image.alt }}" 
@@ -24,8 +24,8 @@
                 </div>
             {% when 'article_content' %}
                  <div class="flex justify-center items-center">
-                        <div class="max-w-4xl px-4 text-justify md:px-8">
-                            <p>{{ article.content }}</p>
+                        <div itemprop="articleBody" class="max-w-4xl px-4 text-justify md:px-8">
+                            <p >{{ article.content }}</p>
                         </div>
                     </div>
                
@@ -34,15 +34,15 @@
                 {% if section.settings.datetime %}
                     <div class="flex justify-center items-center">
                         <div class="max-w-7xl text-center">
-                            <time datetime="{{ article.published_at |date: '%Y-%m-%d' }}">{{ article.published_at | date:format: 'on_date'}}</time>
+                            <time itemprop="datePublished dateCreated" datetime="{{ article.published_at |date: '%Y-%m-%d' }}">{{ article.published_at | date:format: 'on_date'}}</time>
                         </div>
                     </div>
                 {% endif %}
             {% when 'article_author' %}
                  <div class="flex justify-center items-center">
-                        <div class="max-w-7xl text-center">
+                        <div class="max-w-7xl text-center" itemscope itemtype="http://schema.org/Person">
                             {% if section.settings.author %}
-                                <small>{{ article.author }}</small>
+                                <small itemprop="auther">{{ article.author }}</small>
                             {% endif %}
                            
                         </div>
@@ -58,15 +58,21 @@
 {% if blog.comments_enabled? %}
     <div id="comment" class="my-8">
         {% if article.comments_count > 0 %}
-               <div class="flex-1 max-w-4xl mx-auto py-5 justify-center items-center font-semibold text-gray-500 text-3xl">
-                    <h2 class="text-lg mb-4 font-medium">See what people say</h2>
+               <div class="flex-1 max-w-4xl px-8 mx-auto py-5 justify-center items-center   ">
+                    <h2 class="text-lg mb-4 font-medium text-gray-700">See what people say</h2>
                     {% paginate article.comments by 5 %}
                         {% for comment in article.comments%}
                             <div class="flex-1 border rounded-2xl my-4 px-2 sm:px-6 sm:py-4 leading-relaxed">
-                                <span class="comment-author">{{ comment.author }}</span> <span class="text-xs text-gray-400">{{ comment.created_at|date:format: 'default'}}</span>
-                                <p class="text-sm">{{ comment.content }}</p>
+                                <span class="comment-author text-gray-700 font-normal text-[18px]">{{ comment.author }}</span> <span class="text-[12px] text-gray-600">{{ comment.created_at|date:format: 'default'}}</span>
+                                <p class="text-[14px] text-gray-500">{{ comment.content }}</p>
                             </div>
                         {% endfor %}
+                        {% if paginate.pages >1 %}
+                            <div class="flex justify-center mx-auto items-center ">
+
+                                {{ paginate | default_pagination }}
+                            </div>
+                        {% endif %}
                     {% endpaginate %}
                 </div>
             {% else %}
@@ -77,6 +83,36 @@
                 <div id="comment_form" class="mb-8">
                     {% form 'new_comment', article %}
                       <div class="flex-1 mx-auto items-center max-w-4xl  px-4">
+                        {% if form.errors %}
+                            <div class="border p-5">
+                                <div class="flex flex-row items-center w-full my-3">
+                                    <div class="text-red-500">
+                                        {% render 'icon-error' %}
+                                    </div>
+                                    <div class="text-sm font-medium ml-3">
+                                        Sorry! Unable to post your Comment
+                                    </div>
+                                </div>
+                                <ul class="px-4 mb-3 ml-7 list-decimal">
+                                     {% for error in form.errors %}
+                                        <li>
+                                            <span>
+                                                {{ form.errors.messages[error] }}
+                                            </span>
+                                        </li>
+                                     {% endfor %}   
+                                </ul>
+                            </div>
+                        {% elsif form.posted_successfully? %}
+                            <div class="flex flex-row items-center w-full my-3 p-5">
+                                <div class="text-green-500">
+                                    {% render 'icon-success' %}
+                                </div>
+                                <div class="text-sm font-medium ml-3">
+                                    Comment Posted Successfully    
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="px-1 md:flex mb-3">
                             <div class="px-3 md:w-1/2">
                             <label for="comment_author"  class="text-gray-700 font-medium uppercase text-xs mb-2">Name</label>
@@ -106,7 +142,32 @@
     </div>
 {% endif %}
     
-
+<script type="application/ld+json">
+    {
+    "@context":"http://schema.org",
+    "@type":"BlogPosting",
+    "headline":{{ article.title | json }},
+    "articleBody":{{ article.content|strip_html | json }},
+    {% if article.excerpt != blank %}
+        "description":{{ article.excerpt | strip_html | json }}
+    {% endif %}
+    {% if article.image %}
+        "image":[
+            {{ article.image | image_url: 'medium' | prepend:'https:' | json }}
+        ],
+    {% endif %}
+    "datePublished":{{ article.published_at | date:format: 'default' | json}},
+    "dateCreated":{{ article.created_at | date: format: 'default' | json}},
+    "author":{
+    "@type":"Person",
+    "name":{{ article.author | json }}
+    },
+    "publisher":{
+    "@type":"Organization",
+    "name":{{ shop.name | json }}
+    }
+    }
+</script>
    
 
 {% schema %}
