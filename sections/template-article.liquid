@@ -1,0 +1,16 @@
+<h2>{{ article.title }}</h2>
+<img src="{{ article.image | image_url: width: 700}}" 
+     alt="{{ article.image.alt }}" 
+     width="{{ article.image.width }}" 
+     height="{{ article.image.height }}">
+
+<p>{{ article.content }}</p>
+
+<div class="flex justify-between items-center">
+
+    <time datetime="{{ article.published_at |date: '%Y-%m-%d' }}">{{ article.published_at |date: '%Y-%m-%d' }}</time>
+    <time datetime="{{ article.created_at |date: '%Y-%m-%d' }}">{{ article.created_at |date: '%Y-%m-%d' }}</time>
+
+    <small>{{ article.author }}</small>
+   
+</div>

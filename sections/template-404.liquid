@@ -1,0 +1,53 @@
+
+   <section class="flex justify-center items-center h-[70vh] ">
+  <div class="w-full  text-center">
+    <h3 class="text-center text-2xl text-red-800 font-bold">{{ section.settings.headtitle | upcase }}</h3>
+    <h4 class="text-center text-black/80">{{ section.settings.subhead }}</h4>
+    <p >{{ section.settings.subtext }}</p> 
+    {% if section.settings.button-url == blank %}
+        {% assign shop_url = shop.secure_url %}
+        {% else %}
+        {% assign shop_url = section.settings.button-url %}
+    {% endif %}
+    <a class="bg-green-400 hover:bg-green-300 text-white rounded-xl py-1 px-3" href="{{ shop_url }}">{{ section.settings.link-404 }}</a>
+  </div>
+</section>
+
+
+
+{% schema %}
+    {
+        "name": "Template 404",
+        "settings": [
+            {
+            "type": "text",
+            "id": "headtitle",
+            "default":"Error 404  ",
+            "label": "404 Head Title"
+            },
+            {
+            "type": "text",
+            "id": "subhead",
+            "default":"Page not found  ",
+            "label": "404 SubHead"
+            },
+            {
+            "type": "text",
+            "id": "subtext",
+            "default":"The page you are looking is not available  ",
+            "label": "404 Text"
+            },
+            {
+            "type": "text",
+            "label": "Link For 404 ",
+            "id": "link-404",
+            "default":"Homepage"
+            },
+            {
+            "type": "url",
+            "id": "button-url",
+            "label": "404 Link URL"
+            }
+        ]
+    }
+{% endschema %}
