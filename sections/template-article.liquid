@@ -1,23 +1,44 @@
-<h2>{{ article.title }}</h2>
-<img src="{{ article.image | image_url: width: 700}}" 
-     alt="{{ article.image.alt }}" 
-     width="{{ article.image.width }}" 
-     height="{{ article.image.height }}">
+{% for block in section.blocks %}
+    {% case block.type %}
+        {% when 'article_title' %}
+            <div class="flex justify-center item-center">
+                <div class="max-w-7xl text-center">
+                    <a href="{{ blog.url }}" class="text-base uppercase text-gray-500 hover:text-gray-900 font-bold">{{ blog.title }}</a>
+                    <h1 class="text-4xl md:text-6xl font-medium uppercase">{{ article.title }}</h1>
+                </div>
+            </div>
+        {% when 'article_image' %}
+            <div class="max-w-7xl bg-blue-100 rounded-lg mx-2 md:mx-auto overflow-hidden">
 
-<p>{{ article.content }}</p>
+                <img  src="{{ article.image | image_url: width: 700}}" 
+                     alt="{{ article.image.alt }}" 
+                     width="{{ article.image.width }}" 
+                     height="{{ article.image.height }}">
+            </div>
+        {% when 'article_content' %}
+            <p>{{ article.content }}</p>
+           
+        
+        {% when 'article_date_publish' %}
+            {% if section.settings.datetime %}
+                <time datetime="{{ article.published_at |date: '%Y-%m-%d' }}">{{ article.published_at |date: '%Y-%m-%d' }}</time>
+                <time datetime="{{ article.created_at |date: '%Y-%m-%d' }}">{{ article.created_at |date: '%Y-%m-%d' }}</time>
+            {% endif %}
+        {% when 'article_author' %}
+            {% if section.settings.author %}
+                <small>{{ article.author }}</small>
+            {% endif %}
 
-<div class="flex justify-between items-center">
+          
+        {% else %}
+            
+    {% endcase %}
+{% endfor %}
+
+
     
-    {% if section.settings.datetime %}
-        <time datetime="{{ article.published_at |date: '%Y-%m-%d' }}">{{ article.published_at |date: '%Y-%m-%d' }}</time>
-        <time datetime="{{ article.created_at |date: '%Y-%m-%d' }}">{{ article.created_at |date: '%Y-%m-%d' }}</time>
-    {% endif %}
-    {% if section.settings.auther %}
-        <small>{{ article.author }}</small>
-    {% endif %}
 
    
-</div>
 
 {% schema %}
     {
@@ -25,8 +46,8 @@
         "settings": [
             {
             "type": "checkbox",
-            "id": "auther",
-            "label": "Auther Name",
+            "id": "author",
+            "label": "Author Name",
             "default":true
             },
             {
@@ -34,6 +55,33 @@
             "label": "Show Time",
             "id": "datetime",
             "default":true
+            }
+        ],
+        "blocks": [
+            {
+            "type": "article_title",
+            "name":"Title",
+            "limit":1
+            },
+             {
+            "type": "article_author",
+            "name":"Author Name",
+            "limit":1
+            },
+             {
+            "type": "article_date_publish",
+            "name":"Publish Date",
+            "limit":1
+            },
+             {
+            "type": "article_image",
+            "name":"Images",
+            "limit":2
+            },
+             {
+            "type": "article_content",
+            "name":"Content",
+            "limit":1
             }
         ]
     }
