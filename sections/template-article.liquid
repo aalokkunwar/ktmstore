@@ -7,10 +7,34 @@
 <p>{{ article.content }}</p>
 
 <div class="flex justify-between items-center">
+    
+    {% if section.settings.datetime %}
+        <time datetime="{{ article.published_at |date: '%Y-%m-%d' }}">{{ article.published_at |date: '%Y-%m-%d' }}</time>
+        <time datetime="{{ article.created_at |date: '%Y-%m-%d' }}">{{ article.created_at |date: '%Y-%m-%d' }}</time>
+    {% endif %}
+    {% if section.settings.auther %}
+        <small>{{ article.author }}</small>
+    {% endif %}
 
-    <time datetime="{{ article.published_at |date: '%Y-%m-%d' }}">{{ article.published_at |date: '%Y-%m-%d' }}</time>
-    <time datetime="{{ article.created_at |date: '%Y-%m-%d' }}">{{ article.created_at |date: '%Y-%m-%d' }}</time>
-
-    <small>{{ article.author }}</small>
    
 </div>
+
+{% schema %}
+    {
+        "name": "Tempalte Article",
+        "settings": [
+            {
+            "type": "checkbox",
+            "id": "auther",
+            "label": "Auther Name",
+            "default":true
+            },
+            {
+            "type": "checkbox",
+            "label": "Show Time",
+            "id": "datetime",
+            "default":true
+            }
+        ]
+    }
+{% endschema %}
