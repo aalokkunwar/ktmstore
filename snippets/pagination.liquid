@@ -1,0 +1,17 @@
+{% if pagesobj.pages>0 %}
+    <nav role="navigation" class="flex justify-center my-8">
+        {% if pagesobj.previous %}
+            <a class="border border-gray-600 text-gray-600 hover:bg-gray-800 hover:text-white px-5 py-2 mx-1 rounded-sm font-medium" href="{{ pagesobj.previous.url }}">{{ pagesobj.previous.title }}</a>
+        {% endif %}
+        {% for part in pagesobj.parts %}
+            {% if part.is_link %}
+                <a class="border border-gray-600 text-gray-600 hover:bg-gray-800 hover:text-white px-5 py-2 mx-1 rounded-sm font-medium" href="{{ part.url }}">{{ part.title }}</a>
+                {% else %}
+                <span class="border border-gray-600 text-white bg-gray-800  px-5 py-2 mx-1 rounded-sm font-medium" >{{ part.title }}</span>
+            {% endif %}
+        {% endfor %}
+        {% if pagesobj.next %}
+            <a class="border border-gray-600 text-gray-600 hover:bg-gray-800 hover:text-white px-5 py-2 mx-1 rounded-sm font-medium" href="{{ pagesobj.next.url }}">{{ pagesobj.next.title }}</a>
+        {% endif %}
+    </nav>
+{% endif %}

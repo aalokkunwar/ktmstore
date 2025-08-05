@@ -60,19 +60,16 @@
         {% if article.comments_count > 0 %}
                <div class="flex-1 max-w-4xl px-8 mx-auto py-5 justify-center items-center   ">
                     <h2 class="text-lg mb-4 font-medium text-gray-700">See what people say</h2>
-                    {% paginate article.comments by 5 %}
+                    {% paginate article.comments by section.settings.number_of_comment %}
                         {% for comment in article.comments%}
                             <div class="flex-1 border rounded-2xl my-4 px-2 sm:px-6 sm:py-4 leading-relaxed">
                                 <span class="comment-author text-gray-700 font-normal text-[18px]">{{ comment.author }}</span> <span class="text-[12px] text-gray-600">{{ comment.created_at|date:format: 'default'}}</span>
                                 <p class="text-[14px] text-gray-500">{{ comment.content }}</p>
                             </div>
                         {% endfor %}
-                        {% if paginate.pages >1 %}
-                            <div class="flex justify-center mx-auto items-center ">
-
-                                {{ paginate | default_pagination }}
-                            </div>
-                        {% endif %}
+                        <div class="max-w-6xl mx-auto">
+                            {% render 'pagination', pagesobj:paginate %}
+                        </div>
                     {% endpaginate %}
                 </div>
             {% else %}
@@ -185,6 +182,15 @@
             "label": "Show Time",
             "id": "datetime",
             "default":true
+            },
+             {
+            "type": "range",
+            "id": "number_of_comment",
+            "label": "Number of Comment Show",
+            "min": 1,
+            "max": 6,
+            "default":2,
+            "step": 1
             }
         ],
         "blocks": [
