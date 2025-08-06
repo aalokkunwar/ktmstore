@@ -1,5 +1,7 @@
-<div class="flex flex-col flex-1 items-center my-8">
-    <h3 class="text-3xl text-gray-800 font-medium my-8 md:my-16">Hello Nepal 123</h3>
+<div class="flex flex-col flex-1 items-center  my-8">
+    {% if section.settings.title != blank %}
+        <h3 class="text-3xl text-gray-800 font-medium my-6 md:my-10">{{ section.settings.title }}</h3>
+    {% endif %}
     {% form  'contact'%}
          {% if form.errors %}
                             <div class="border p-5">
