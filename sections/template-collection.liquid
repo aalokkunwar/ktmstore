@@ -1,10 +1,10 @@
  <div class="px-4 py-8">
-     {% paginate collection.products by 6 %}
+     {% paginate collection.products by section.settings.collection-items %}
         <h1 class="text-3xl text-center">{{ collection.title }}</h1>
         <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {% for product in collection.products %}
-                   {% render 'product-card', products_p:product %}
+                   {% render 'product-card', products_p:product, vendorname:section.settings.verdor-name %}
                         {% else %}
                             <h3>There are no Products In your collecction  </h3>
                 {% endfor %}
@@ -13,3 +13,22 @@
         {% render 'pagination' pagesobj:paginate  %}
     {% endpaginate %}
  </div>
+ {% schema %}
+    {
+        "name": "Template Collection",
+        "settings": [
+            {
+            "type": "number",
+            "id": "collection-items",
+            "label": "Number of Product in Page",
+            "default":6
+            },
+            {
+            "type": "checkbox",
+            "id": "verdor-name",
+            "label": "Show Vendor Name",
+            "default":true
+            }
+        ]
+    }
+ {% endschema %}
