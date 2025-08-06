@@ -6,8 +6,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {% for product in collection.products %}
                    {% render 'product-card', products_p:product, vendorname:section.settings.verdor-name %}
-                        {% else %}
-                            <h3>There are no Products In your collecction  </h3>
+                    {% else %}
+                        <h3>There are no Products In your collecction  </h3>
                 {% endfor %}
             </div>
         </div>
