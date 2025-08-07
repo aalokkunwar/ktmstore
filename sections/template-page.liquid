@@ -6,8 +6,16 @@
         </div>
     </div>
     <div class="py-4">
-        <span class="text-sm text-justify">
-            {{ page.content }}
-        </span>
+        {% if page.title == 'Contact' %}
+            <div class="max-w-xl px-5 mx-auto">
+                <span class="text-sm  text-justify">
+                 {{ page.content }}
+                </span> 
+            </div>
+        {% else %}
+            <span class="text-sm text-justify">
+                {{ page.content }}
+            </span>
+        {% endif %}
     </div>
 </div>
