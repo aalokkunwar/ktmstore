@@ -83,7 +83,7 @@
                                 {% if selected_variant.price < selected_variant.compare_at_price %}
                                     {% assign discount_amount = selected_variant.compare_at_price | minus: selected_variant.price  %}
                                     {% assign discount_per = discount_amount | times:100 | divided_by:selected_variant.compare_at_price %}
-                                    <span class="transform -rotate-45 origin-center inline-block bg-red-500 text-white px-4 py-[2px] text-sm font-bold rounded-full mb-4"> {{ discount_per }}% OFF {{ product.has_only_default_variant }}</span>
+                                    <span class="transform -rotate-45 origin-center inline-block bg-red-500 text-white px-4 py-[2px] text-sm font-bold rounded-full mb-4"> {{ discount_per }}% OFF </span>
                                 {% endif %}
                             </div>
                         {% when 'variant_selector' %}
