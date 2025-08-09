@@ -1,0 +1,198 @@
+<!-- Create account card  -->
+<div id="createAccountCard" class="flex justify-center items-center min-h-screen bg-gray-50 px-4">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+    <h2 class="text-2xl font-bold text-gray-800 text-center">Create Account</h2>
+    <p class="mt-2 text-sm text-gray-500 text-center">Fill in the details to get started</p>
+
+    {% form 'create_customer' %}
+      {% if form.errors %}
+        <div class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+
+      {% if form.posted_successfully? %}
+        <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-600 text-sm">
+          Account created successfully!
+        </div>
+      {% endif %}
+
+      <!-- First + Last -->
+      <div class="mt-6 grid grid-cols-2 gap-3">
+        <div>
+          <label for="FirstName" class="block text-sm font-medium text-gray-700">First name</label>
+          <input id="FirstName" name="customer[first_name]" type="text" required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 sm:text-sm" placeholder="John">
+        </div>
+        <div>
+          <label for="LastName" class="block text-sm font-medium text-gray-700">Last name</label>
+          <input id="LastName" name="customer[last_name]" type="text" required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 sm:text-sm" placeholder="Doe">
+        </div>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="mt-4">
+        <label for="DoB" class="block text-sm font-medium text-gray-700">Date of birth</label>
+        <!-- stored in customer notes -->
+        <input id="DoB" name="customer[note][date_of_birth]" type="date" required
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 sm:text-sm">
+      </div>
+
+      <!-- Email -->
+      <div class="mt-4">
+        <label for="Email" class="block text-sm font-medium text-gray-700">Email address</label>
+        <input id="Email" name="customer[email]" type="email" autocomplete="email" required
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
+          placeholder="you@example.com">
+      </div>
+
+      <!-- Password with toggle -->
+      <div class="mt-4">
+        <label for="CreatePassword" class="block text-sm font-medium text-gray-700">Password</label>
+        <div class="relative mt-1">
+          <input id="CreatePassword" name="customer[password]" type="password" autocomplete="new-password" required
+            class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 pr-10 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
+            placeholder="••••••••">
+          <button type="button" data-target="CreatePassword" aria-label="Show or hide password"
+            class="toggle-password absolute inset-y-0 right-2 flex items-center px-2 text-gray-500">
+            <!-- eye icon initial -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Confirm password with toggle -->
+      <div class="mt-4">
+        <label for="ConfirmPassword" class="block text-sm font-medium text-gray-700">Confirm password</label>
+        <div class="relative mt-1">
+          <!-- include a name for easier debugging; Shopify will ignore unknown fields -->
+          <input id="ConfirmPassword" name="confirm_password" type="password" required
+            class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 pr-10 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
+            placeholder="••••••••">
+          <button type="button" data-target="ConfirmPassword" aria-label="Show or hide confirm password"
+            class="toggle-password absolute inset-y-0 right-2 flex items-center px-2 text-gray-500">
+            <!-- eye icon initial -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button id="createAccountBtn" type="submit"
+        class="mt-6 w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        Create account
+      </button>
+
+      <p class="mt-6 text-center text-sm text-gray-500">
+        Already have an account?
+        <a href="{{ routes.account_login_url }}" class="text-gray-600 hover:text-gray-500 font-medium">Sign in</a>
+      </p>
+    {% endform %}
+  </div>
+</div>
+
+<!-- Password mismatch modal -->
+<div id="passwordModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+  <div role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+    class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full mx-4">
+    <h3 id="modalTitle" class="text-lg font-semibold text-red-600">Password mismatch</h3>
+    <p class="modal-message mt-2 text-sm text-gray-600">Your passwords do not match. Please try again.</p>
+    <div class="mt-4 flex justify-end">
+      <button id="closeModal" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- Validation + Toggle script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const card = document.getElementById('createAccountCard');
+    if (!card) return;
+    const form = card.querySelector('form');
+    if (!form) return;
+
+    const password = form.querySelector('#CreatePassword');
+    const confirm = form.querySelector('#ConfirmPassword');
+    const submitBtn = form.querySelector('#createAccountBtn');
+    const modal = document.getElementById('passwordModal');
+    const closeModal = document.getElementById('closeModal');
+
+    // SVGs for toggles
+    const eyeSVG = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>';
+    const eyeSlashSVG = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18M10.477 10.477A3 3 0 1113.523 13.523M9.88 5.6A9.971 9.971 0 0121 12c-1.274 4.057-5.064 7-9.542 7-2.013 0-3.88-.498-5.527-1.36"/></svg>';
+
+    function showModal(message) {
+      const msgEl = modal.querySelector('.modal-message');
+      msgEl.textContent = message;
+      modal.classList.remove('hidden');
+      closeModal.focus();
+    }
+
+    function hideModal() {
+      modal.classList.add('hidden');
+    }
+
+    // Main validation handler — attached to the submit button click
+    function validateAndSubmit(e) {
+      e.preventDefault();
+
+      // Let browser check required / email validity first
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      // Check password match
+      if (password.value !== confirm.value) {
+        showModal('Passwords do not match. Please re-enter them.');
+        confirm.focus();
+        return;
+      }
+
+      // OK: disable button to prevent double submit and then submit programmatically
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      form.submit();
+    }
+
+    // Attach to click of submit button (this prevents accidental bypass)
+    submitBtn.addEventListener('click', validateAndSubmit);
+
+    // Extra safety: intercept normal 'submit' events too (covers Enter-key submits)
+    form.addEventListener('submit', function (e) {
+      if (password.value !== confirm.value) {
+        e.preventDefault();
+        showModal('Passwords do not match. Please re-enter them.');
+        confirm.focus();
+      }
+    });
+
+    // Modal handlers
+    closeModal.addEventListener('click', hideModal);
+    modal.addEventListener('click', function (ev) { if (ev.target === modal) hideModal(); });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && !modal.classList.contains('hidden')) hideModal(); });
+
+    // Toggle show/hide password
+    card.querySelectorAll('.toggle-password').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const targetId = btn.getAttribute('data-target');
+        const input = card.querySelector('#' + targetId);
+        if (!input) return;
+        const wasPassword = input.type === 'password';
+        input.type = wasPassword ? 'text' : 'password';
+        btn.innerHTML = wasPassword ? eyeSlashSVG : eyeSVG;
+      });
+    });
+  });
+</script>
